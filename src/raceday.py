@@ -1,19 +1,19 @@
 import pandas as pd
 
 class RaceDay():
-    def __init__( self , exportPath ):
+    def __init__( self , excelFilePath ):
         
-        self.exportPath = exportPath
-        self.data = self.loadExport()
+        self.excelFilePath = excelFilePath
+        self.data = self.loadExcel()
         
         self.entrants = self.getEntrantsList(self.data)
         self.shirts = self.getShirts(self.data)
     
-    def loadExport( self ):
+    def loadExcel( self ):
 
         standardize = lambda text : text.lower().replace("  "," ").replace("  "," ").replace(" ","_")
     
-        rawExport = pd.read_csv( self.exportPath )
+        rawExport = pd.read_excel( self.excelFilePath )
         rawExport.columns = [standardize(column) for column in rawExport.columns]
         rawExport["bib"] = rawExport["bib"].fillna(-1).apply(int)
     
