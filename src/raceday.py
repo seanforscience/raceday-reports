@@ -22,11 +22,9 @@ class RaceDay():
         return(rawExport)
     
     def getEntrantsList( self , data ):
-    
+        '''return list of entrants. I'm worried we might have to do this for a subset of the data in the future, so for now data is an explicit argument.'''    
         entrants = data[["bib","first_name","last_name","city","state"]].copy()
 
-        data["bib"]
-    
         return(entrants)
     
     def getShirts( self , data ):
