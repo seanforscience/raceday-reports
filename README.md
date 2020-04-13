@@ -4,6 +4,8 @@ This is a project to convert ultrasignup exports to practical sheets for use wit
 
 ## Current Offerings
 
-1. Generate Tshirt Sales List
-2. Generate Checkin Sheet
+1. Generate Swag Sales List by Runner
+2. Generate Swag Totals
+3. Generate Checkin Sheet
+4. Generate Runner medical / emergency information list
 
