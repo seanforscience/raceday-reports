@@ -8,6 +8,7 @@ class RaceDay():
         
         self.entrants = self.getEntrantsList(self.data)
         self.shirts = self.getShirts(self.data)
+        self.emergency = self.getEmergency(self.data)
     
     def loadExcel( self ):
 
@@ -42,9 +43,25 @@ class RaceDay():
     
         return(shirts)
 
+    def getEmergency( self , data ):
+
+        medicalColumns = ["last_name","first_name","bib","age","city","state","emergency_name","emergency_phone","email","phone"]
+
+        medicalColumnDisambiguations = {}
+        medicalColumnDisambiguations["phone"] = "runner_phone"
+        medicalColumnDisambiguations["email"] = "runner_email"
+
+        medicalData = data[medicalColumns].copy()
+        medicalData.columns = [ medicalColumnDisambiguations.get(x,x) for x in medicalData.columns ]
+
+        return(medicalData)
+
+
+
     def export( self , path ):
         
         self.shirts.to_csv( path + "shirts.csv")
-        self.entrants.to_csv( path + "entrants.csv")        
+        self.entrants.to_csv( path + "entrants.csv")
+        self.emergency.to_csv( path + "emergency.csv")
 
 
