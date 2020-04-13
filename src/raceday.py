@@ -15,13 +15,17 @@ class RaceDay():
     
         rawExport = pd.read_excel( self.excelFilePath )
         rawExport.columns = [standardize(column) for column in rawExport.columns]
-        rawExport["bib"] = rawExport["bib"].fillna(-1).apply(int)
+
+        # impute blank for missing bibs. fix python autoconvert int-strings to float-strings by lopping off the decimal
+        rawExport["bib"] = rawExport["bib"].fillna("").apply(str).apply(lambda x : x.split(".")[0])
     
         return(rawExport)
     
     def getEntrantsList( self , data ):
     
         entrants = data[["bib","first_name","last_name","city","state"]].copy()
+
+        data["bib"]
     
         return(entrants)
     
