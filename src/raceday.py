@@ -33,14 +33,12 @@ class RaceDay():
         nameColumns = ["bib","first_name","last_name"]
         shirts = data[ nameColumns + shirtColumns].copy().fillna(0)
 
-    
         totals = shirts[shirtColumns].sum()
         shirts.loc["totals"] = totals
     
         # clean up
         shirts[shirtColumns] = shirts[shirtColumns].applymap(int)
         shirts[nameColumns] = shirts[nameColumns].fillna("totals")
-
     
         return(shirts)
 
