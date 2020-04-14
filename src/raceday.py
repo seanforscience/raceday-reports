@@ -26,11 +26,11 @@ class RaceDay():
     
         return(rawExport)
     
-    def getEntrantsList( self , data ):
+    def getEntrantsList( self , data , sortBy=["last_name","first_name"] ):
         '''return list of entrants. I'm worried we might have to do this for a subset of the data in the future, so for now data is an explicit argument.'''    
         entrants = data[self.runner_id_columns].copy()
 
-        return(entrants)
+        return(entrants.sort_values(by=sortBy))
     
     def getSwag( self , data ):
 
@@ -72,22 +72,22 @@ class RaceDay():
         
         return(shirts)
 
-    def getSwagList( self , data ):
+    def getSwagList( self , data , sortBy=["last_name","first_name"]):
         ''' Simple Swag export for the checkin staff'''
         swag = self.getSwag(data)
         output = swag[ self.runner_id_columns + ["swag_list"]]
 
         # remove totals
         output = output.loc[[i for i in output.index if i != "totals"]]
-        return(output)
+        return(output.sort_values(by=sortBy))
 
     def getSwagTotals( self , data ):
-        ''' total of all swag requirements for race merch staff'''
+        '''total of all swag requirements for race merch staff'''
         swag = self.getSwag(data)
         return(swag.loc[["totals"]])
 
 
-    def getEmergency( self , data ):
+    def getEmergency( self , data , sortBy=["last_name","first_name"]):
 
         medicalColumns = self.runner_id_columns + ["age","emergency_name","emergency_phone","email","phone","any_medical_conditions_we_should_know_about"]
 
@@ -99,18 +99,19 @@ class RaceDay():
         medicalData = data[medicalColumns].copy()
         medicalData.columns = [ medicalColumnDisambiguations.get(x,x) for x in medicalData.columns ]
 
-        return(medicalData)
+        return(medicalData.sort_values(by=sortBy))
 
 
 
-    def export( self , path ):
-        
-        def exportFile( data , name ):
-            data.to_csv( path + name + ".csv" , index = None )
+    def export( self , outPath ):
+       
+        sheets = {"entrant_list":self.entrants , "emergency_info" : self.emergency , "runner_merchandise": self.runnerSwag , "merch_totals":self.swagTotals }
+        output = pd.ExcelWriter(outPath)
 
-        exportFile( self.runnerSwag , "runner_swag" )
-        exportFile( self.swagTotals , "swag_totals" )
-        exportFile( self.entrants , "entrants" )
-        exportFile( self.emergency , "emergency" )
+        for sheet in sheets:
+            sheets[sheet].to_excel(output,sheet_name=sheet,index=None)
 
+        output.save()
+
+        print("Awesome! Results exported to " + outPath + "!") 
 
