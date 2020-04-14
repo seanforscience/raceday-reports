@@ -35,7 +35,7 @@ class RaceDay():
     def getSwag( self , data ):
 
         # identify purchased items by price in the column name.
-        shirtColumns = [c for c in data.columns if len(re.findall("[0-9][0-9].[0-9][0-9]",c)) > 0]
+        shirtColumns = [c for c in data.columns if len(re.findall("[0-9]{2}.[0-9]{2}",c)) > 0]
         
         shirts = data[ self.runner_id_columns + shirtColumns ].copy().fillna(0)
 
