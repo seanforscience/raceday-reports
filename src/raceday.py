@@ -89,11 +89,12 @@ class RaceDay():
 
     def getEmergency( self , data ):
 
-        medicalColumns = self.runner_id_columns + ["age","emergency_name","emergency_phone","email","phone"]
+        medicalColumns = self.runner_id_columns + ["age","emergency_name","emergency_phone","email","phone","any_medical_conditions_we_should_know_about"]
 
         medicalColumnDisambiguations = {}
         medicalColumnDisambiguations["phone"] = "runner_phone"
         medicalColumnDisambiguations["email"] = "runner_email"
+        medicalColumnDisambiguations["any_medical_conditions_we_should_know_about"] = "medical_conditions"
 
         medicalData = data[medicalColumns].copy()
         medicalData.columns = [ medicalColumnDisambiguations.get(x,x) for x in medicalData.columns ]
