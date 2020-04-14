@@ -68,7 +68,8 @@ class RaceDay():
 
         # append Swag List
 
-        shirts["swag_list"] = getSwagAsList( shirts, shirtColumns )
+        trimPrices = lambda x : re.sub("_[0-9]{2}.[0-9]{2}","",x)
+        shirts["swag_list"] = getSwagAsList( shirts, shirtColumns ).apply(trimPrices)
         
         return(shirts)
 
@@ -93,7 +94,6 @@ class RaceDay():
 
         medicalColumnDisambiguations = {}
         medicalColumnDisambiguations["phone"] = "runner_phone"
-        medicalColumnDisambiguations["email"] = "runner_email"
         medicalColumnDisambiguations["any_medical_conditions_we_should_know_about"] = "medical_conditions"
 
         medicalData = data[medicalColumns].copy()
@@ -105,7 +105,7 @@ class RaceDay():
 
     def export( self , outPath ):
        
-        sheets = {"entrant_list":self.entrants , "emergency_info" : self.emergency , "runner_merchandise": self.runnerSwag , "merch_totals":self.swagTotals }
+        sheets = {"entrant_list":self.entrants , "emergency_info" : self.emergency , "runner_merchandise": self.runnerSwag }
         output = pd.ExcelWriter(outPath)
 
         for sheet in sheets:
